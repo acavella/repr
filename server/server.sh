@@ -22,6 +22,12 @@ set -u
 __dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 __db="${__dir}/db"
 
+# Script Variables
+DTG=$(date '+%Y%m%d-%H%M%S')
+MANIFEST="${__db}/manifest.txt"
+MANIFEST_TMP="${__db}/manifest_TMP.txt"
+MANIFEST_DIFF="${__db}/manifest_${DTG}.txt"
+
 # Load variables from external config
 source ${__dir}/rs-server.conf
 
@@ -65,7 +71,18 @@ get_package_manager() {
     fi
 }
 
-main () {
+build_manifest() {
+    # Check if this is the initial sync
+    if [ -f "${MANIFEST}" ]; then
+        printf "  %b Manifest file found: %s\\n" "${TICK}" "${MANIFEST}"
+        ls ${SERVER_REPO} > ${MANIFEST_TMP}
+        grep -Fxv -f ${MANIFEST} ${MANIFEST_TMP} > ${MANIFEST_TMP}
+    else
+        printf "  %b %bManifest not found, assuming first run.%b\\n" "${CROSS}" "${COL_LIGHT_RED}" "${COL_NC}"
+    fi
+}
+
+main() {
     reposync -p ${SERVER_REPO} --gpg-check --repoid=${SRC_REPO}
     exit 0 # clean exit
 }
