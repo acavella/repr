@@ -22,3 +22,6 @@ set -u
 __dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 __db="${__dir}/db"
 
+# Load variables from external config
+source ${__dir}/rs-server.conf
+
