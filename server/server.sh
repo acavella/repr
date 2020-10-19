@@ -23,10 +23,10 @@ __dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 __db="${__dir}/db"
 
 # Script Variables
-DTG=$(date '+%Y%m%d-%H%M%S')
+DG=$(date '+%Y%m%d')
 MANIFEST="${__db}/manifest.txt"
 MANIFEST_TMP="${__db}/manifest_TMP.txt"
-MANIFEST_DIFF="${__db}/manifest_${DTG}.txt"
+MANIFEST_DIFF="${__db}/manifest_${DG}.txt"
 
 # Load variables from external config
 source ${__dir}/rs-server.conf
