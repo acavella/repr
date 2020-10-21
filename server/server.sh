@@ -75,8 +75,17 @@ build_manifest() {
     # Check if this is the initial sync
     if [ -f "${MANIFEST}" ]; then
         printf "  %b Manifest file found: %s\\n" "${TICK}" "${MANIFEST}"
-        ls ${SERVER_REPO} > ${MANIFEST_TMP}
-        grep -Fxv -f ${MANIFEST} ${MANIFEST_TMP} > ${MANIFEST_TMP}
+        local tmp_dir=$(mktemp -d /tmp/foo.XXXXXXXXX)
+        ls ${SERVER_REPO} > ${MANIFEST_TMP} # generate temporary manifest
+        grep -Fxv -f ${MANIFEST} ${MANIFEST_TMP} > ${MANIFEST_DIFF} # build differential manifest
+        mapfile -t PACKAGE_LIST < ${MANIFEST_DIFF} # load manifest into array
+        # iterate through array and copy new files to tmp
+        for i in "${PACKAGE_LIST[@]}"
+        do
+            cp ${repo}/$i ${tmp_dir}
+        done
+        tar -czvf ${UPDATE_LOC}/update_${DTG}.tar.gz ${tmp_dir} # create archive from tmp
+        rm -rf ${tmp_dir} # cleanup tmp
     else
         printf "  %b %bManifest not found, assuming first run.%b\\n" "${CROSS}" "${COL_LIGHT_RED}" "${COL_NC}"
     fi
@@ -84,5 +93,6 @@ build_manifest() {
 
 main() {
     reposync -p ${SERVER_REPO} --gpg-check --repoid=${SRC_REPO}
+    build_manifest
     exit 0 # clean exit
 }
