@@ -84,8 +84,10 @@ build_manifest() {
         do
             cp ${repo}/$i ${tmp_dir}
         done
+        mv ${MANIFEST_DIFF} ${tmp_dir}/MANIFEST_${DTG}
         tar -czvf ${UPDATE_LOC}/update_${DTG}.tar.gz ${tmp_dir} # create archive from tmp
         rm -rf ${tmp_dir} # cleanup tmp
+        mv ${MANIFEST_TMP} ${MANIFEST}
     else
         printf "  %b %bManifest not found, assuming first run.%b\\n" "${CROSS}" "${COL_LIGHT_RED}" "${COL_NC}"
     fi
