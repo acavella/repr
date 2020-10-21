@@ -84,10 +84,10 @@ build_manifest() {
         do
             cp ${repo}/$i ${tmp_dir}
         done
-        mv ${MANIFEST_DIFF} ${tmp_dir}/MANIFEST_${DTG}
+        mv ${MANIFEST_DIFF} ${tmp_dir}/MANIFEST_${DTG} # move manifest diff to be included with tar
         tar -czvf ${UPDATE_LOC}/update_${DTG}.tar.gz ${tmp_dir} # create archive from tmp
         rm -rf ${tmp_dir} # cleanup tmp
-        mv ${MANIFEST_TMP} ${MANIFEST}
+        mv ${MANIFEST_TMP} ${MANIFEST} # overwrite manifest with updates
     else
         printf "  %b %bManifest not found, assuming first run.%b\\n" "${CROSS}" "${COL_LIGHT_RED}" "${COL_NC}"
     fi
