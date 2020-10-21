@@ -75,7 +75,7 @@ build_manifest() {
     # Check if this is the initial sync
     if [ -f "${MANIFEST}" ]; then
         printf "  %b Manifest file found: %s\\n" "${TICK}" "${MANIFEST}"
-        local tmp_dir=$(mktemp -d /tmp/foo.XXXXXXXXX)
+        local tmp_dir=$(mktemp -d /tmp/repo.XXXXXXXXX)
         ls ${SERVER_REPO} > ${MANIFEST_TMP} # generate temporary manifest
         grep -Fxv -f ${MANIFEST} ${MANIFEST_TMP} > ${MANIFEST_DIFF} # build differential manifest
         mapfile -t PACKAGE_LIST < ${MANIFEST_DIFF} # load manifest into array
