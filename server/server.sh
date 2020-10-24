@@ -71,13 +71,14 @@ get_package_manager() {
     fi
 }
 
-build_manifest() {
+build_update_tar() {
     # Check if this is the initial sync
     if [ -f "${MANIFEST}" ]; then
         printf "  %b Manifest file found: %s\\n" "${TICK}" "${MANIFEST}"
         local tmp_dir=$(mktemp -d /tmp/repo.XXXXXXXXX)
         local str1="Building differential package list"
         local str2="Building update package"
+        local str3="Building initial manifest"
         ls ${SERVER_REPO} > ${MANIFEST_TMP} # generate temporary manifest
         printf "  %b %s..." "${INFO}" "${str1}"
         grep -Fxv -f ${MANIFEST} ${MANIFEST_TMP} > ${MANIFEST_DIFF} # build differential manifest
@@ -96,11 +97,14 @@ build_manifest() {
         mv ${MANIFEST_TMP} ${MANIFEST} # overwrite manifest with updates
     else
         printf "  %b %bManifest not found, assuming first run.%b\\n" "${CROSS}" "${COL_LIGHT_RED}" "${COL_NC}"
+        printf "  %b %s..." "${INFO}" "${str3}"
+
+        printf "%b  %b %s...\\n" "${OVER}" "${TICK}" "${str3}"
     fi
 }
 
 main() {
     reposync -p ${SERVER_REPO} --gpg-check --repoid=${SRC_REPO}
-    build_manifest
+    build_update_tar
     exit 0 # clean exit
 }
