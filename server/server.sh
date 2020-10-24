@@ -98,7 +98,7 @@ build_update_tar() {
     else
         printf "  %b %bManifest not found, assuming first run.%b\\n" "${CROSS}" "${COL_LIGHT_RED}" "${COL_NC}"
         printf "  %b %s..." "${INFO}" "${str3}"
-        ls ${SERVER_REPO} > ${MANIFEST} # generate temporary manifest
+        ls ${SERVER_REPO} > ${MANIFEST} # generate initial manifest
         printf "%b  %b %s...\\n" "${OVER}" "${TICK}" "${str3}"
     fi
 }
