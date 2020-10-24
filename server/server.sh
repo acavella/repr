@@ -76,9 +76,14 @@ build_manifest() {
     if [ -f "${MANIFEST}" ]; then
         printf "  %b Manifest file found: %s\\n" "${TICK}" "${MANIFEST}"
         local tmp_dir=$(mktemp -d /tmp/repo.XXXXXXXXX)
+        local str1="Building differential package list"
+        local str2="Building update package"
         ls ${SERVER_REPO} > ${MANIFEST_TMP} # generate temporary manifest
+        printf "  %b %s..." "${INFO}" "${str1}"
         grep -Fxv -f ${MANIFEST} ${MANIFEST_TMP} > ${MANIFEST_DIFF} # build differential manifest
         mapfile -t PACKAGE_LIST < ${MANIFEST_DIFF} # load manifest into array
+        printf "%b  %b %s...\\n" "${OVER}" "${TICK}" "${str1}"
+        printf "  %b %s..." "${INFO}" "${str2}"
         # iterate through array and copy new files to tmp
         for i in "${PACKAGE_LIST[@]}"
         do
@@ -86,6 +91,7 @@ build_manifest() {
         done
         mv ${MANIFEST_DIFF} ${tmp_dir}/MANIFEST_${DTG} # move manifest diff to be included with tar
         tar -czvf ${UPDATE_LOC}/update_${DTG}.tar.gz ${tmp_dir} # create archive from tmp
+        printf "%b  %b %s...\\n" "${OVER}" "${TICK}" "${str2}"
         rm -rf ${tmp_dir} # cleanup tmp
         mv ${MANIFEST_TMP} ${MANIFEST} # overwrite manifest with updates
     else
