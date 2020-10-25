@@ -27,6 +27,7 @@ DG=$(date '+%Y%m%d')
 MANIFEST="${__db}/manifest.txt"
 MANIFEST_TMP="${__db}/manifest_TMP.txt"
 MANIFEST_DIFF="${__db}/manifest_${DG}.txt"
+TMP_DIR=$(mktemp -d /tmp/repo.XXXXXXXXX)
 
 # Load variables from external config
 source ${__dir}/rs-server.conf
@@ -71,11 +72,28 @@ get_package_manager() {
     fi
 }
 
+create_client_install() {
+    # Local, named variables
+    local str="Generating client instal"
+    # Configure bash script for client install
+    printf "  %b %s..." "${INFO}" "${str}"
+    # Install revoke virtual host configuration
+    {
+        echo "#!/usr/bin/env bash"
+        echo "cp ./packages/*.rpm ${CLIENT_REPO}"
+        echo "restorecon -r ${CLIENT_REPO}"
+        echo "createrepo --update ${CLIENT_REPO}"
+        echo "exit 0"
+    }>${TMP_DIR}/update-repo.sh
+    chmod +x ${TMP_DIR}/update-repo.sh
+    printf "%b  %b %s...\\n" "${OVER}" "${TICK}" "${str}"
+}
+
 build_update_tar() {
     # Check if this is the initial sync
     if [ -f "${MANIFEST}" ]; then
         printf "  %b Manifest file found: %s\\n" "${TICK}" "${MANIFEST}"
-        local tmp_dir=$(mktemp -d /tmp/repo.XXXXXXXXX)
+        
         local str1="Building differential package list"
         local str2="Building update package"
         local str3="Building initial manifest"
@@ -88,12 +106,13 @@ build_update_tar() {
         # iterate through array and copy new files to tmp
         for i in "${PACKAGE_LIST[@]}"
         do
-            cp ${repo}/$i ${tmp_dir}
+            cp ${repo}/$i ${TMP_DIR}/packages/
         done
-        mv ${MANIFEST_DIFF} ${tmp_dir}/MANIFEST_${DTG} # move manifest diff to be included with tar
-        tar -czvf ${UPDATE_LOC}/update_${DTG}.tar.gz ${tmp_dir} # create archive from tmp
+        create_client_install
+        mv ${MANIFEST_DIFF} ${TMP_DIR}/MANIFEST_${DTG} # move manifest diff to be included with tar
+        tar -czvf ${UPDATE_LOC}/update_${DTG}.tar.gz ${TMP_DIR} # create archive from tmp
         printf "%b  %b %s...\\n" "${OVER}" "${TICK}" "${str2}"
-        rm -rf ${tmp_dir} # cleanup tmp
+        rm -rf ${TMP_DIR} # cleanup tmp
         mv ${MANIFEST_TMP} ${MANIFEST} # overwrite manifest with updates
     else
         printf "  %b %bManifest not found, assuming first run.%b\\n" "${CROSS}" "${COL_LIGHT_RED}" "${COL_NC}"
@@ -101,23 +120,6 @@ build_update_tar() {
         ls ${SERVER_REPO} > ${MANIFEST} # generate initial manifest
         printf "%b  %b %s...\\n" "${OVER}" "${TICK}" "${str3}"
     fi
-}
-
-create_client_install() {
-    # Local, named variables
-    local str="Generating client instal"
-    # Configure bash script for client install
-    printf "  %b %s..." "${INFO}" "${str}"
-    # Install revoke virtual host configuration
-    {
-        echo "#!/usr/bin/env bash"
-        echo "ServerName ${srvname}"
-        echo "DocumentRoot \"${WWW_DIR}\""
-        echo "ErrorLog ${INSTALL_DIR}/log/error.log"
-        echo "CustomLog ${INSTALL_DIR}/log/access.log combined"
-        echo "</VirtualHost>"
-    }>${WWW_CONF}
-    printf "%b  %b %s...\\n" "${OVER}" "${TICK}" "${str}"
 }
 
 main() {
