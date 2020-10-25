@@ -103,6 +103,23 @@ build_update_tar() {
     fi
 }
 
+create_client_install() {
+    # Local, named variables
+    local str="Generating client instal"
+    # Configure bash script for client install
+    printf "  %b %s..." "${INFO}" "${str}"
+    # Install revoke virtual host configuration
+    {
+        echo "#!/usr/bin/env bash"
+        echo "ServerName ${srvname}"
+        echo "DocumentRoot \"${WWW_DIR}\""
+        echo "ErrorLog ${INSTALL_DIR}/log/error.log"
+        echo "CustomLog ${INSTALL_DIR}/log/access.log combined"
+        echo "</VirtualHost>"
+    }>${WWW_CONF}
+    printf "%b  %b %s...\\n" "${OVER}" "${TICK}" "${str}"
+}
+
 main() {
     reposync -p ${SERVER_REPO} --gpg-check --repoid=${SRC_REPO}
     build_update_tar
