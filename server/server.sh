@@ -127,3 +127,5 @@ main() {
     build_update_tar
     exit 0 # clean exit
 }
+
+main
