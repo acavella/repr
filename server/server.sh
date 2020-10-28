@@ -123,7 +123,7 @@ build_update_tar() {
 }
 
 main() {
-    reposync -p ${SERVER_REPO} --gpg-check --repoid=${SRC_REPO}
+    reposync -p ${SERVER_REPO} --repoid=${SRC_REPO}
     build_update_tar
     exit 0 # clean exit
 }
