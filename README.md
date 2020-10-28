@@ -25,7 +25,10 @@ Performs sync of online YUM repositories and prepares incremental updates for us
 
 ## Installation
 
-Download the latest release.
+1. Download the [latest release](https://github.com/altCipher/reposync/releases)
+2. Extract the zip on the online server
+3. Configure server and client repo details in rs-server.conf
+4. Execute reposync.sh on the server to build an initial repository and manifest
 
 ## Security Vulnerabilities
 
