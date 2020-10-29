@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 # Repo Sync: Incremental updates for offline repositories
+# Version 1.0.0-Beta.2
 # (c) 2018 - 2019 Tony Cavella (https://github.com/altCipher/reposync)
 # This script acts as the server; syncs within an online repository
 # and prepares incremental updates for transfer to offline client.
@@ -123,7 +124,10 @@ build_update_tar() {
 }
 
 main() {
+    local str="Performing repository sync"
+    printf "  %b %s..." "${INFO}" "${str}"
     reposync -p ${SERVER_REPO} --repoid=${SRC_REPO}
+    printf "%b  %b %s...\\n" "${OVER}" "${TICK}" "${str}"
     build_update_tar
     exit 0 # clean exit
 }
