@@ -48,6 +48,20 @@ OVER="\\r\\033[K"
 # All operations are built into individual functions for better readibility
 # and management.  
 
+show_ascii_logo() {
+    echo -e "
+ _ __ ___ _ __   ___  ___ _   _ _ __   ___ 
+| '__/ _ \ '_ \ / _ \/ __| | | | '_ \ / __|
+| | |  __/ |_) | (_) \__ \ |_| | | | | (__ 
+|_|  \___| .__/ \___/|___/\__, |_| |_|\___|
+         |_|              |___/            
+
+               
+reposync // generate incremental yum updates
+"
+}
+
+
 is_command() {
     # Checks for existence of string passed in as only function argument.
     # Exit value of 0 when exists, 1 if not exists. Value is the result
@@ -123,11 +137,16 @@ build_update_tar() {
     fi
 }
 
-main() {
+update_repo() {
     local str="Performing repository sync"
     printf "  %b %s..." "${INFO}" "${str}"
     reposync -p ${SERVER_REPO} --repoid=${SRC_REPO}
     printf "%b  %b %s...\\n" "${OVER}" "${TICK}" "${str}"
+}
+
+main() {
+    show_ascii_logo
+    update_repo
     build_update_tar
     exit 0 # clean exit
 }
