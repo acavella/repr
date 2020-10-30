@@ -112,7 +112,7 @@ build_update_tar() {
         local str1="Building differential package list"
         local str2="Building update package"
         local str3="Building initial manifest"
-        ls ${SERVER_REPO} > ${MANIFEST_TMP} # generate temporary manifest
+        ls ${SERVER_REPO}/${REPO_ID}/Packages/*/*.rpm > ${MANIFEST_TMP} # generate temporary manifest
         printf "  %b %s..." "${INFO}" "${str1}"
         grep -Fxv -f ${MANIFEST} ${MANIFEST_TMP} > ${MANIFEST_DIFF} # build differential manifest
         mapfile -t PACKAGE_LIST < ${MANIFEST_DIFF} # load manifest into array
@@ -132,7 +132,7 @@ build_update_tar() {
     else
         printf "  %b %bManifest not found, assuming first run.%b\\n" "${CROSS}" "${COL_LIGHT_RED}" "${COL_NC}"
         printf "  %b %s..." "${INFO}" "${str3}"
-        ls ${SERVER_REPO} > ${MANIFEST} # generate initial manifest
+        ls ${SERVER_REPO}/${REPO_ID}/Packages/*/*.rpm > ${MANIFEST} # generate initial manifest
         printf "%b  %b %s...\\n" "${OVER}" "${TICK}" "${str3}"
     fi
 }
@@ -140,7 +140,7 @@ build_update_tar() {
 update_repo() {
     local str="Performing repository sync"
     printf "  %b %s..." "${INFO}" "${str}"
-    reposync -p ${SERVER_REPO} --repoid=${SRC_REPO}
+    reposync -p ${SERVER_REPO} --repoid=${REPO_ID}
     printf "%b  %b %s...\\n" "${OVER}" "${TICK}" "${str}"
 }
 
