@@ -121,7 +121,7 @@ build_update_tar() {
         # iterate through array and copy new files to tmp
         for i in "${PACKAGE_LIST[@]}"
         do
-            cp ${repo}/$i ${TMP_DIR}/packages/
+            cp ${i} ${TMP_DIR}/packages/
         done
         create_client_install
         mv ${MANIFEST_DIFF} ${TMP_DIR}/MANIFEST_${DTG} # move manifest diff to be included with tar
