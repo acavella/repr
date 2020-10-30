@@ -140,7 +140,7 @@ build_update_tar() {
 update_repo() {
     local str="Performing repository sync"
     printf "  %b %s..." "${INFO}" "${str}"
-    reposync -p ${SERVER_REPO} --repoid=${REPO_ID}
+    reposync -n -p ${SERVER_REPO} --repoid=${REPO_ID}
     printf "%b  %b %s...\\n" "${OVER}" "${TICK}" "${str}"
 }
 
