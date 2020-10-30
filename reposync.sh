@@ -105,13 +105,13 @@ create_client_install() {
 }
 
 build_update_tar() {
+    # local, named variables
+    local str1="Building differential package list"
+    local str2="Building update package"
+    local str3="Building initial manifest"
     # Check if this is the initial sync
     if [ -f "${MANIFEST}" ]; then
         printf "  %b Manifest file found: %s\\n" "${TICK}" "${MANIFEST}"
-        
-        local str1="Building differential package list"
-        local str2="Building update package"
-        local str3="Building initial manifest"
         ls ${SERVER_REPO}/${REPO_ID}/Packages/*/*.rpm > ${MANIFEST_TMP} # generate temporary manifest
         printf "  %b %s..." "${INFO}" "${str1}"
         grep -Fxv -f ${MANIFEST} ${MANIFEST_TMP} > ${MANIFEST_DIFF} # build differential manifest
