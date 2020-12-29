@@ -50,7 +50,7 @@ Distributed under the GNU General Public License v3.0. See `LICENSE` for more in
 
 ## Contact
 
-Tony Cavella - tony@cavella.com
+Tony Cavella - <tony@cavella.com>
 
 Project Link: [https://github.com/altCipher/reposync](https://github.com/altCipher/reposync)
 
