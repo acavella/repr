@@ -125,8 +125,8 @@ build_update_tar() {
             cp ${i} ${TMP_DIR}/packages/
         done
         create_client_install
-        mv ${MANIFEST_DIFF} ${TMP_DIR}/MANIFEST_${DTG} # move manifest diff to be included with tar
-        tar -czvf ${UPDATE_LOC}/update_${DTG}.tar.gz ${TMP_DIR} # create archive from tmp
+        mv ${MANIFEST_DIFF} ${TMP_DIR}/MANIFEST_${DG} # move manifest diff to be included with tar
+        tar -czvf ${UPDATE_LOC}/update_${D#G}.tar.gz ${TMP_DIR} # create archive from tmp
         printf "%b  %b %s...\\n" "${OVER}" "${TICK}" "${str2}"
         rm -rf ${TMP_DIR} # cleanup tmp
         mv ${MANIFEST_TMP} ${MANIFEST} # overwrite manifest with updates
