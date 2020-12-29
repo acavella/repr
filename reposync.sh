@@ -75,11 +75,9 @@ get_package_manager() {
     # Check for common package managers per OS
     if is_command dnf ; then
         PKG_MGR="dnf" # set to dnf
-        SYSTEMD=1
         printf "  %b Package manager: %s\\n" "${TICK}" "${PKG_MGR}"
     elif is_command yum ; then
         PKG_MGR="yum" # set to yum
-        SYSTEMD=0
         printf "  %b Package manager: %s\\n" "${TICK}" "${PKG_MGR}"
     else
         # unable to detect a common yum based package manager
