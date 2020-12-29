@@ -11,5 +11,5 @@ The following table details security compliance and tracking for current and pas
 ## Reporting a Vulnerability
 
 I welcome all responsible disclosures. **Please do not open an ISSUE to report a security problem**
-
+<!--lint disable no-auto-link-without-protocol-->
 I accept disclosures via email at <tony@cavella.com>

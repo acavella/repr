@@ -49,7 +49,7 @@ Contributions are what make the open source community such an amazing place to b
 Distributed under the GNU General Public License v3.0. See `LICENSE` for more information.
 
 ## Contact
-
+<!--lint disable no-auto-link-without-protocol-->
 Tony Cavella - <tony@cavella.com>
 
 Project Link: [https://github.com/altCipher/reposync](https://github.com/altCipher/reposync)
