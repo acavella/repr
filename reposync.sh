@@ -111,6 +111,7 @@ build_update_tar() {
     local str3="Building initial manifest"
     # Check if this is the initial sync
     if [ -f "${MANIFEST}" ]; then
+        mkdir ${TMP_DIR}/packages
         printf "  %b Manifest file found: %s\\n" "${TICK}" "${MANIFEST}"
         ls ${SERVER_REPO}/${REPO_ID}/Packages/*/*.rpm > ${MANIFEST_TMP} # generate temporary manifest
         printf "  %b %s..." "${INFO}" "${str1}"
