@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # Repo Sync: Incremental updates for offline repositories
-# Version 1.0.0-Beta.2
+# Version 1.0.0-Beta.5
 # (c) 2018 - 2019 Tony Cavella (https://github.com/altCipher/reposync)
 # This script acts as the server; syncs within an online repository
 # and prepares incremental updates for transfer to offline client.
@@ -28,6 +28,7 @@ DG=$(date '+%Y%m%d')
 MANIFEST="${__db}/manifest.txt"
 MANIFEST_TMP="${__db}/manifest_TMP.txt"
 MANIFEST_DIFF="${__db}/manifest_${DG}.txt"
+DB="${__db}/"
 TMP_DIR=$(mktemp -d /tmp/repo.XXXXXXXXX)
 
 # Load variables from external config
@@ -82,6 +83,12 @@ get_package_manager() {
     else
         # unable to detect a common yum based package manager
         printf "  %b %bSupported package manager not found%b\\n" "${CROSS}" "${COL_LIGHT_RED}" "${COL_NC}"
+    fi
+}
+
+first_run() {
+    if [ ! -f  ]; then
+        echo "File not found!"
     fi
 }
 
