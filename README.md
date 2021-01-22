@@ -1,5 +1,5 @@
 <!-- PROJECT LOGO -->
-# reposync
+# reaper
 
 <!-- PROJECT SHIELDS -->
 <p align="center">
