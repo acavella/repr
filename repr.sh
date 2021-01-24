@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# Repo Sync: Incremental updates for offline repositories
+# repr: Incremental updates for offline repositories
 # Version 1.0.0-Beta.5
 # (c) 2018 - 2019 Tony Cavella (https://github.com/altCipher/reposync)
 # This script acts as the server; syncs within an online repository
