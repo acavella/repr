@@ -28,7 +28,7 @@ DG=$(date '+%Y%m%d')
 MANIFEST="${__db}/manifest.txt"
 MANIFEST_TMP="${__db}/manifest_TMP.txt"
 MANIFEST_DIFF="${__db}/manifest_${DG}.txt"
-DB="${__db}/"
+DB="${__db}/repr.db"
 TMP_DIR=$(mktemp -d /tmp/repo.XXXXXXXXX)
 
 # Load variables from external config
@@ -52,19 +52,29 @@ OVER="\\r\\033[K"
 show_ascii_logo() {
     echo -e "
                                      
-   .u    .               .d``            .u    .   
- .d88B :@8c       .u     @8Ne.   .u    .d88B :@8c  
-="8888f8888r   ud8888.   %8888:u@88N  ="8888f8888r 
-  4888>'88"  :888'8888.   `888I  888.   4888>'88"  
-  4888> '    d888 '88%"    888I  888I   4888> '    
-  4888>      8888.+"       888I  888I   4888>      
- .d888L .+   8888L       uW888L  888'  .d888L .+   
- ^"8888*"    '8888c. .+ '*88888Nu88P   ^"8888*"    
-    "Y"       "88888%   ~ '88888F`        "Y"      
-                "YP'       888 ^                   
-                           *8E                     
-                           '8>                     
-                            "                                     
+               ...
+             ;::::;
+           ;::::; :;
+         ;:::::'   :;
+        ;:::::;     ;.
+       ,:::::'       ;           OOO\
+       ::::::;       ;          OOOOO\
+       ;:::::;       ;         OOOOOOOO
+      ,;::::::;     ;'         / OOOOOOO
+    ;:::::::::`. ,,,;.        /  / DOOOOOO
+  .';:::::::::::::::::;,     /  /     DOOOO
+ ,::::::;::::::;;;;::::;,   /  /        DOOO
+;`::::::`'::::::;;;::::: ,#/  /          DOOO
+:`:::::::`;::::::;;::: ;::#  /            DOOO
+::`:::::::`;:::::::: ;::::# /              DOO
+`:`:::::::`;:::::: ;::::::#/               DOO
+ :::`:::::::`;; ;:::::::::##                OO
+ ::::`:::::::`;::::::::;:::#                OO
+ `:::::`::::::::::::;'`:;::#                O
+  `:::::`::::::::;' /  / `:#
+   ::::::`:::::;'  /  /   `#
+                         
+                             
 repr // generate incremental yum updates
 "
 }
@@ -157,6 +167,14 @@ update_repo() {
     printf "%b  %b %s...\\n" "${OVER}" "${TICK}" "${str}"
 }
 
+init_checks() {
+    if [ -f "${DB}" ]; then
+        printf "  %b Database found: %s\\n" "${TICK}" "${MANIFEST}"
+    else
+        printf "  %b %bDatabase not found, assuming first run..%b\\n" "${CROSS}" "${COL_LIGHT_RED}" "${COL_NC}"
+    if
+}
+
 main() {
     show_ascii_logo
     update_repo
@@ -164,4 +182,5 @@ main() {
     exit 0 # clean exit
 }
 
+init_checks
 main
