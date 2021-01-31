@@ -172,6 +172,21 @@ init_checks() {
         printf "  %b Database found: %s\\n" "${TICK}" "${MANIFEST}"
     else
         printf "  %b %bDatabase not found, assuming first run..%b\\n" "${CROSS}" "${COL_LIGHT_RED}" "${COL_NC}"
+        create_db() {
+        local str="Creating SQLite database and building table"
+        # INITIALIZE DATABASE
+        printf "  %b %s..." "${INFO}" "${str}"
+        sqlite3 ${DB} <<'END_SQL'
+            CREATE TABLE crlList (
+            Row_ID integer PRIMARY KEY AUTOINCREMENT,
+            CRL_Uri text,
+            CRL_Name text,
+            CRL_Hash text,
+            CRL_Date text
+        ); 
+END_SQL
+    printf "%b  %b %s...\\n" "${OVER}" "${TICK}" "${str}"
+}
     if
 }
 
