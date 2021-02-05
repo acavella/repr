@@ -177,14 +177,12 @@ init_checks() {
         # INITIALIZE DATABASE
         printf "  %b %s..." "${INFO}" "${str}"
         sqlite3 ${DB} <<'END_SQL'
-            CREATE TABLE crlList (
+            CREATE TABLE sysData (
             Row_ID integer PRIMARY KEY AUTOINCREMENT,
-            CRL_Uri text,
-            CRL_Name text,
-            CRL_Hash text,
-            CRL_Date text
+            version text,
+            configured text
         ); 
-END_SQL
+        END_SQL
     printf "%b  %b %s...\\n" "${OVER}" "${TICK}" "${str}"
 }
     if
