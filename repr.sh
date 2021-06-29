@@ -30,6 +30,7 @@ MANIFEST_TMP="${__db}/manifest_TMP.txt"
 MANIFEST_DIFF="${__db}/manifest_${DG}.txt"
 DB="${__db}/repr.db"
 TMP_DIR=$(mktemp -d /tmp/repo.XXXXXXXXX)
+VERSION="1.0.0-beta.5d"
 
 # Load variables from external config
 source ${__dir}/rs-server.conf
@@ -50,11 +51,14 @@ OVER="\\r\\033[K"
 # and management.  
 
 show_ascii_logo() {
-    echo -e "                         
-repr // generate incremental yum updates
-"
+    echo -e "
+    repr // generate incremental yum updates
+    "
 }
 
+show_version() {
+    printf "repr version ${VERSION}"
+}
 
 is_command() {
     # Checks for existence of string passed in as only function argument.
@@ -143,27 +147,6 @@ update_repo() {
     printf "%b  %b %s...\\n" "${OVER}" "${TICK}" "${str}"
 }
 
-init_checks() {
-    if [ -f "${DB}" ]; then
-        printf "  %b Database found: %s\\n" "${TICK}" "${MANIFEST}"
-    else
-        printf "  %b %bDatabase not found, assuming first run..%b\\n" "${CROSS}" "${COL_LIGHT_RED}" "${COL_NC}"
-        create_db() {
-        local str="Creating SQLite database and building table"
-        # INITIALIZE DATABASE
-        printf "  %b %s..." "${INFO}" "${str}"
-        sqlite3 ${DB} <<'END_SQL'
-            CREATE TABLE sysData (
-            Row_ID integer PRIMARY KEY AUTOINCREMENT,
-            version text,
-            configured text
-        ); 
-        END_SQL
-    printf "%b  %b %s...\\n" "${OVER}" "${TICK}" "${str}"
-}
-    if
-}
-
 main() {
     show_ascii_logo
     update_repo
@@ -171,5 +154,4 @@ main() {
     exit 0 # clean exit
 }
 
-init_checks
 main
