@@ -1,12 +1,13 @@
 name: Bug Report
 description: Report a bug in repr.
+title: '[Bug]: '
 labels: 'bug: unconfirmed'
 body:
 - type: markdown
   attributes:
     value: |
-      Thanks for taking the time to report an EssentialsX bug! Fill out the form below to provide us with info to help fix the bug.
-      Only use this if you're 100% sure you've found a bug and can reproduce it. If you're looking for general help with EssentialsX, try the Q&A forum or MOSS Discord server.
+      Thanks for taking the time to report a repr bug! Fill out the form below to provide us with info to help fix the bug.
+      Only use this if you're 100% sure you've found a bug and can reproduce it. If you're looking for general help with repr, try the Wiki or Q&A forum.
 - type: dropdown
   attributes:
     label: Type of bug
@@ -24,8 +25,8 @@ body:
 
 - type: textarea
   attributes:
-    label: "`/ess version` output"
-    description: Run `/ess version` in the console, then copy and paste the full output of the command into this box.
+    label: "Version Output"
+    description: Run `./repr version` in the console, then copy and paste the full output of the command into this box.
   validations:
     required: true
 - type: input
