@@ -23,7 +23,7 @@ body:
   validations:
     required: true
 
-- type: textarea
+- type: input
   attributes:
     label: "Version Output"
     description: Run `./repr version` in the console, then copy and paste the full output of the command into this box.
