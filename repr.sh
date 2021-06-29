@@ -31,6 +31,7 @@ MANIFEST_DIFF="${__db}/manifest_${DG}.txt"
 DB="${__db}/repr.db"
 TMP_DIR=$(mktemp -d /tmp/repo.XXXXXXXXX)
 VERSION="1.0.0-beta.5d"
+DETECTED_OS=$(cat /etc/os-release | grep PRETTY_NAME | cut -d '=' -f2- | tr -d '"') # Full OS name with version
 
 # Load variables from external config
 source ${__dir}/rs-server.conf
@@ -58,6 +59,9 @@ show_ascii_logo() {
 
 show_version() {
     printf "repr version ${VERSION}"
+    printf "Bash  version ${BASH_VERSION}"
+    printf "${DETECTED_OS}"
+
 }
 
 is_command() {
