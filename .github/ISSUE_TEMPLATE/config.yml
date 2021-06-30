@@ -13,7 +13,7 @@ contact_links:
     url: https://github.com/EssentialsX/Essentials/discussions/new?category=q-a
     about: Create a support ticket to get help from developers.
   - name: Suggest a feature
-    url: https://github.com/EssentialsX/Essentials/discussions/new?category=ideas-and-feature-suggestions
+    url: https://github.com/altcipher/repr/discussions/new?category=ideas-and-feature-suggestions
     about: Suggest new features for EssentialsX!
   - name: Get help from the community on Discord
     url: https://discord.gg/casfFyh
