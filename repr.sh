@@ -157,4 +157,10 @@ main() {
     exit 0 # clean exit
 }
 
-main
+if [[ "$1" == "version" ]]; then
+	show_version
+elif [[ "$1" == "help" ]]; then
+	show_help
+elif [[ -z $1 ]]; then 
+	main
+fi
