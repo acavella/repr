@@ -61,7 +61,6 @@ show_version() {
     printf "repr version ${VERSION}"
     printf "Bash  version ${BASH_VERSION}"
     printf "${DETECTED_OS}"
-
 }
 
 is_command() {
