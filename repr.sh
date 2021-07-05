@@ -61,6 +61,22 @@ show_version() {
     printf "repr version ${VERSION}"
     printf "Bash  version ${BASH_VERSION}"
     printf "${DETECTED_OS}"
+    exit 0
+}
+
+show_help() {
+    echo -e "
+    Usage: ./repr.sh [OPTION]
+    Syncs with remote RPM repo and creates incremental update packages for use with an offline repository.
+
+        -u, --update        execute standard update process
+            --help          display this help and exit
+            --version       output version information and exit
+
+    Examples:
+        ./repr -u  Downloads latest RPMs and creates a tarball.
+    "
+    exit 0
 }
 
 is_command() {
@@ -157,10 +173,13 @@ main() {
     exit 0 # clean exit
 }
 
-if [[ "$1" == "version" ]]; then
+if [[ "$1" == "--update" ]]; then
+	main
+elif [[ "$1" == "--version" ]]; then
 	show_version
-elif [[ "$1" == "help" ]]; then
+elif [[ "$1" == "--help" ]]; then
 	show_help
 elif [[ -z $1 ]]; then 
-	main
+	show_help
+    exit 1
 fi
