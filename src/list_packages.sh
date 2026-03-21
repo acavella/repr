@@ -10,7 +10,12 @@
 TIMESTAMP=$(date +%Y%m%d_%H%M%S)
 OUTPUT_FILE="installed_packages_${TIMESTAMP}.txt"
 
-echo "Gathering installed packages using dnf..."
+# Function to log messages with a timestamp
+log() {
+    echo "[$(date +'%Y-%m-%d %H:%M:%S')] $1"
+}
+
+log "Gathering installed packages using dnf..."
 
 # Run dnf list installed and redirect the output to the text file
 # Using awk to format the output nicely (optional, but makes it cleaner)
@@ -18,10 +23,10 @@ dnf list installed > "$OUTPUT_FILE"
 
 # Check if the dnf command executed successfully
 if [ $? -eq 0 ]; then
-    echo "✅ Success! The list of installed packages has been saved."
-    echo "📄 File location: $(pwd)/$OUTPUT_FILE"
+    log "Success! The list of installed packages has been saved."
+    log "File location: $(pwd)/$OUTPUT_FILE"
 else
-    echo "❌ Error: Failed to generate the package list."
-    echo "Please ensure you are running this on an AlmaLinux/RHEL system with 'dnf' installed."
+    log "Error: Failed to generate the package list."
+    log "Please ensure you are running this on an AlmaLinux/RHEL system with 'dnf' installed."
     exit 1
 fi
