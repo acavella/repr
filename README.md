@@ -1,27 +1,15 @@
 <!-- PROJECT LOGO -->
 # repr
 
-<!-- PROJECT SHIELDS -->
-<p align="center">
-  <img alt="GitHub repo size" src="https://img.shields.io/github/repo-size/altCipher/repr?style=flat-square">
-  <img alt="GitHub closed issues" src="https://img.shields.io/github/issues-closed/altCipher/repr?style=flat-square">
-  <img alt="GitHub" src="https://img.shields.io/github/license/altCipher/repr?style=flat-square">
-  <img alt="GitHub release (latest SemVer including pre-releases)" src="https://img.shields.io/github/v/release/altCipher/repr?include_prereleases&style=flat-square">
-  <img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/altCipher/repr">
-</p>
-
 ## Overview
 
 Syncs with YUM repositories and prepares incremental updates for use with an offline repository.
 
-- Retrieves rpms from a subscribed online YUM/DNF repository
-- Builds incremental update tar for use on offline repository server
-- Generates client side script to automatically deploy and update client repository
-
 ## Requirements
 - Bash
-- yum-utils
+- dnf/yum
 - tar
+- createrepo
 
 ## Installation
 
