@@ -18,7 +18,6 @@ log() {
 log "Gathering installed packages using dnf..."
 
 # Run dnf list installed and redirect the output to the text file
-# Using awk to format the output nicely (optional, but makes it cleaner)
 dnf list installed > "$OUTPUT_FILE"
 
 # Check if the dnf command executed successfully
