@@ -14,4 +14,3 @@ installed_packages*  # Any file starting with "installed_packages" (e.g., instal
 offline_packages*   # Any file starting with "offline_packages" (e.g., offline_packages.zip)
 src/installed_packages*  # Any file starting with "installed_packages" in the src directory
 src/offline_packages*   # Any file starting with "offline_packages" in the src directory
-src/installed_packages_20260322_190850.txt
