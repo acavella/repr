@@ -18,7 +18,7 @@ log() {
 log "Gathering installed packages using dnf..."
 
 # Run dnf list installed and redirect the output to the text file
-dnf list installed > "$OUTPUT_FILE"
+dnf list --installed > "$OUTPUT_FILE"
 
 # Check if the dnf command executed successfully
 if [ $? -eq 0 ]; then
