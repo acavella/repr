@@ -91,6 +91,16 @@ mkdir -p "$DEST_DIR"
 log "Verifying 'dnf-plugins-core' is installed..."
 sudo dnf install -y dnf-plugins-core >/dev/null 2>&1
 
+# Detect DNF version to set the appropriate skip flag
+DNF_VERSION=$(dnf --version 2>/dev/null | head -n 1 | awk '{print $1}')
+if [[ "$DNF_VERSION" == 5* ]] || [[ "$DNF_VERSION" == *dnf5* ]]; then
+    SKIP_FLAG="--skip-unavailable"
+else
+    SKIP_FLAG="--skip-broken"
+fi
+log "Detected DNF version indicator: $DNF_VERSION"
+log "Using download flag: $SKIP_FLAG"
+
 # Extract package names.
 # We skip the "Installed Packages" header line, ignore empty lines, and deduplicate.
 log "Parsing and deduplicating package lists..."
@@ -104,7 +114,8 @@ log "This may take a substantial amount of time depending on your network..."
 # We pipe the packages into xargs to prevent "argument list too long" errors.
 # --resolve: Resolves and downloads dependencies
 # --alldeps: Ensures all dependencies are downloaded, not just missing ones
-echo "$PACKAGES" | xargs sudo dnf download --resolve --alldeps --destdir="$DEST_DIR"
+# $SKIP_FLAG: Skips packages that are unavailable in the current repositories; prevents failure due to missing packages locally
+echo "$PACKAGES" | xargs sudo dnf download --resolve --alldeps $SKIP_FLAG --destdir="$DEST_DIR"
 
 # Check exit status
 if [ $? -eq 0 ]; then
