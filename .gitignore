@@ -1,0 +1,14 @@
+# General files to ignore
+.env       # Environment variable files
+*.log      # All files ending with .log
+/temp/     # A specific directory named "temp" in the root directory
+build/     # Any directory named "build" at any level
+
+# Operating System and Editor files
+.DS_Store  # macOS specific file
+Thumbs.db  # Windows specific file
+.vscode/   # VS Code editor settings folder
+
+# Test Files
+installed_packages*  # Any file starting with "installed_packages" (e.g., installed_packages.txt)
+offline_packages*   # Any file starting with "offline_packages" (e.g., offline_packages.zip)
