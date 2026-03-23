@@ -102,9 +102,10 @@ log "Detected DNF version indicator: $DNF_VERSION"
 log "Using download flag: $SKIP_FLAG"
 
 # Extract package names.
-# We skip the "Installed Packages" header line, ignore empty lines, and deduplicate.
+# Print only the first column from input files, match only on "word.word" pattern, sort and deduplicate.
 log "Parsing and deduplicating package lists..."
-PACKAGES=$(awk '/^Installed/ {next} NF>0 {print $1}' "$@" | sort -u)
+PACKAGES=$(awk '{print $1}' "$@" | grep -E -o '\S+\.\S+' | sort -u)
+
 
 TOTAL_PKGS=$(echo "$PACKAGES" | wc -w)
 log "Found $TOTAL_PKGS packages. Starting download with dependency resolution..."
