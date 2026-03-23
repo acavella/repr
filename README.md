@@ -1,52 +1,86 @@
-<!-- PROJECT LOGO -->
-# repr
+# repr 2
 
-## Overview
+## Description
 
-Syncs with YUM repositories and prepares incremental updates for use with an offline repository.
+*AlmaLinux/RHEL Offline Package Downloader*
 
-## Requirements
-- Bash
-- dnf/yum
-- tar
-- createrepo
+This project provides a streamlined, automated way to create a fully self-contained, offline YUM/DNF repository based on the installed packages of one or more source systems. It is highly useful for air-gapped environments or managing offline servers.
 
-## Installation
+## Features
 
-1. Download the [latest release](https://github.com/altCipher/reposync/releases)
-2. Extract the zip on the online server
-3. Configure server and client repo details in rs-server.conf
-4. Execute reposync.sh on the server to build an initial repository and manifest
+- Multiple Input Support: Accepts multiple text files containing package lists and intelligently combines them.
+- Automatic Deduplication: Sorts and filters out duplicate packages across multiple lists before downloading.
+- Full Dependency Resolution: Downloads the requested packages and all of their required dependencies.
+- Smart DNF Versioning: Automatically detects whether the host system is running DNF version 4 or 5 and applies the correct flags (--skip-broken vs --skip-unavailable) to prevent failures on missing third-party packages.
+- Local Repository Generation: Automatically runs createrepo to generate necessary YUM/DNF repository metadata.
+- Auto-Archiving: Compresses the downloaded RPMs and metadata into a portable .tar.gz archive.
+- Auto-Cleanup: Safely removes the uncompressed source directory after the archive is successfully built to save disk space.
 
-## Security Vulnerabilities
+## Prerequisites
 
-If you discover a security vulnerability within revoke, please send an e-mail to [tony@cavella.com](mailto:tony@cavella.com?Revoke%20Security%20Vulnerability). Security vulnerabilities are taken very seriously and will be addressed with the utmost priority.
+- An internet-connected AlmaLinux, Rocky Linux, or RHEL-based system.
+- sudo privileges (required for installing prerequisites like dnf-plugins-core and createrepo, and for running dnf download).
 
-## Contributing
+## Usage
 
-Contributions are what make the open source community such an amazing place to be learn, inspire, and create. Any contributions you make are **greatly appreciated**.
+**Step 1: Generate a Package List** 
 
-1. Fork the Project
-2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your Changes (`git commit -m 'Add some AmazingFeature`)
-4. Push to the Branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
+On the system(s) you want to mirror or update, generate a list of currently installed packages. You can use the list_packages.sh script if you have it, or simply run the following command and save the output to a text file:
 
-## License
+``` shell 
+dnf list installed > server1_packages.txt
+```
 
-Distributed under the GNU General Public License v3.0. See `LICENSE` for more information.
+*(Repeat this step on any other servers if you want to combine their requirements into a single offline repository).* 
 
-## Contact
-<!--lint disable no-auto-link-without-protocol-->
-Tony Cavella - <tony@cavella.com>
+**Step 2: Download and Archive Packages**
 
-Project Link: [https://github.com/altCipher/reposync](https://github.com/altCipher/reposync)
+Transfer the text file(s) to your internet-connected machine. Make sure the downloader script is executable:
 
-<!-- ACKNOWLEDGEMENTS -->
-## Acknowledgements
-* [Google](https://www.flaticon.com/authors/google) - TickInCircle icon used in logo.
-* [Img Shields](https://shields.io) - Shields used in `README`
-* [Choose an Open Source License](https://choosealicense.com) - Project `LICENSE`
-* [GitHub Pages](https://pages.github.com)
-* [Markdown Cheatsheet](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet) - Adam Pritchard's markdown cheatsheet.
-* [Semantic Version](https://semver.org) - Semantic Versioning Specification v2.0.0
+``` shell
+chmod +x download_packages.sh
+```
+
+Run the script, passing the text file(s) as arguments:
+
+``` shell
+./download_packages.sh server1_packages.txt server2_packages.txt
+```
+
+**What the script does:**
+
+1. Creates a timestamped directory.
+2. Parses the input files, skipping headers and removing duplicates.
+3. Downloads all RPMs and their dependencies.
+4. Generates repository metadata using createrepo.
+5. Packages everything into offline_packages_YYYYMMDD_HHMMSS.tar.gz.
+6. Deletes the temporary uncompressed directory.
+
+**Step 3: Using the Offline Repository**
+
+1. Transfer the resulting .tar.gz file to your offline/air-gapped machine.
+2. Extract the archive:
+
+``` shell 
+tar -xzf offline_packages_20260321_120000.tar.gz
+```
+
+3. Create a new repository configuration file in /etc/yum.repos.d/. For example, create /etc/yum.repos.d/offline.repo:
+
+``` shell
+[offline-repo]
+name=Offline Packages
+baseurl=file:///path/to/extracted/offline_packages_20260321_120000
+enabled=1
+gpgcheck=0
+```
+
+4. You can now install packages offline using standard DNF commands:
+
+``` shell
+sudo dnf install <package_name>
+```
+
+## Troubleshooting
+
+Missing Packages Warning: If the script warns that some packages failed to download, this is usually because the input list contains custom, local, or third-party RPMs that are not available in the standard repositories of the internet-connected downloading machine. Ensure your downloading machine has the same third-party repositories (like EPEL) enabled as your source machines.
