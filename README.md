@@ -1,6 +1,6 @@
 # repr 2
 
-*AlmaLinux/RHEL Offline Package Downloader*
+*Enterprise Linux (EL) Offline Package Downloader*
 
 This project provides a streamlined, automated way to create a fully self-contained, offline YUM/DNF repository based on the installed packages of one or more source systems. It is highly useful for air-gapped environments or managing offline servers.
 
